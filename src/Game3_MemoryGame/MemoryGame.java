@@ -1,4 +1,4 @@
-package memorygame;
+package Game3_MemoryGame;
 
 /**
  *
@@ -18,6 +18,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import gamebytes.Launcher;
 
 public class MemoryGame extends JFrame implements ActionListener {
     // object declaration
@@ -40,6 +41,8 @@ public class MemoryGame extends JFrame implements ActionListener {
     private Font font, boldFont;
     
     // Constructor
+    public MemoryGame(Launcher launcher) {
+    
     public MemoryGame() {
         // components
             // menu bar
@@ -180,6 +183,15 @@ public class MemoryGame extends JFrame implements ActionListener {
         
         // Centers the initialized window to the middle of the screen
         setLocationRelativeTo(null);
+
+        //go back to main menu when closing
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                launcher.setVisible(true);
+                System.out.println("game2 closed.");
+            }
+        });
         
         // Displays the finalized JFrame
         setResizable(false);
@@ -261,12 +273,12 @@ public class MemoryGame extends JFrame implements ActionListener {
     
     private void loadImages() {
         // Load an image for cards facedown
-        faceDown = new ImageIcon("src/memorygame/images/facedown.png");
+        faceDown = new ImageIcon(getClass().getResource("/Game3_MemoryGame/images/facedown.png"));
 
         // Load face-up images and assign each pair an icon
         icons = new ArrayList<>();
         for (int i = 1; i <= (gridSize * gridSize) / 2; i++) {
-            Icon icon = new ImageIcon(getClass().getResource("/memorygame/images/" + i + ".png")); // Adjust path as needed
+            Icon icon = new ImageIcon(getClass().getResource("/Game3_MemoryGame/images/" + i + ".png")); // Adjust path as needed
             icons.add(icon);
             icons.add(icon); // Add each icon twice for pairs
         }
@@ -446,8 +458,10 @@ public class MemoryGame extends JFrame implements ActionListener {
         });
         gameTimer.start();
     }
-    
+
+    /*
     public static void main(String[] args) {
         new MemoryGame();
     }
+    */
 }
