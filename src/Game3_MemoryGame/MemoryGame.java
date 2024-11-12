@@ -140,7 +140,7 @@ public class MemoryGame extends JFrame implements ActionListener {
                 startTextPanel.add(note, BorderLayout.SOUTH);
 
                 // Preview picture of the game
-                JLabel previewPic = new JLabel(new ImageIcon(getClass().getResource("/memorygame/images/previewPic.png")));
+                JLabel previewPic = new JLabel(new ImageIcon(getClass().getResource("/Game3_MemoryGame/images/previewPic.png")));
                 previewPic.setPreferredSize(new Dimension(250, 200));
                 JLabel author = new JLabel("Created By: Jack Taylor");
                 JPanel preview = new JPanel();
