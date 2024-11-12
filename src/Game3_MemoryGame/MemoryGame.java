@@ -1,4 +1,5 @@
-package Game3_MemoryGame;
+package memorygame;
+
 /**
  *
  * @author Jack
@@ -17,14 +18,13 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collections;
-import gamebytes.Launcher;
 
 public class MemoryGame extends JFrame implements ActionListener {
     // object declaration
     private JPanel startPanel, gamePanel, grid;
     private JMenuBar menuBar;
-    private JMenu difficultyMenu, controlMenu, exit, timerDifficulty, gridDifficulty;
-    private JMenuItem exitConfirm, newGame, timerEasy, timerMedium, timerHard, gridEasy, gridMedium, gridHard;
+    private JMenu difficultyMenu, timerDifficulty, gridDifficulty;
+    private JMenuItem timerEasy, timerMedium, timerHard, gridEasy, gridMedium, gridHard;
     private int gridSize;
     private JButton[][] buttons;
     private JButton firstCard, secondCard, startButton;
@@ -37,11 +37,10 @@ public class MemoryGame extends JFrame implements ActionListener {
     private int timeRemaining, matchedPairs;
     private JLabel timerLabel;
     private String timeDiff;
+    private Font font, boldFont;
     
     // Constructor
-    public MemoryGame(Launcher launcher) {
-        
-        
+    public MemoryGame() {
         // components
             // menu bar
             menuBar = new JMenuBar();
@@ -70,30 +69,35 @@ public class MemoryGame extends JFrame implements ActionListener {
                 difficultyMenu.add(timerDifficulty);
                 difficultyMenu.add(gridDifficulty);
             
-            // Control menu
-            controlMenu = new JMenu("Game Control");
-
-                newGame = new JMenuItem("Start New Game with Current Settings");
-
-                controlMenu.add(newGame);
-
-            // Exit menu
-            exit = new JMenu("Exit Game");
-            
-                exitConfirm = new JMenuItem("Are you sure?");
-
-                exit.add(exitConfirm);
-            
             // Adding the menus to the frame
             menuBar.add(difficultyMenu);
-            menuBar.add(controlMenu);
-            menuBar.add(exit);
                        
             setJMenuBar(menuBar);
         
             // The title
             title = new JLabel("Memory Game", SwingConstants.CENTER);
-            title.setFont(new Font("Segoe UI", Font.BOLD , 30));
+            font = new Font("Segoe UI", 0 , 30);
+            boldFont = new Font("Segoe UI", Font.BOLD, 30);
+            title.setFont(font);
+            
+            title.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    // Change font to bold when mouse hovers over the label
+                    title.setFont(boldFont);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    // Revert font to normal when mouse moves away
+                    title.setFont(font);
+                }
+
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    createGame();
+                }
+            });
         
             // First screen        
                 // Instruction display
@@ -115,8 +119,8 @@ public class MemoryGame extends JFrame implements ActionListener {
                 JPanel note = new JPanel();
                 JLabel noteLabel = new JLabel("Note:", SwingConstants.CENTER);
                 noteLabel.setFont(header);
-                JLabel notes1 = new JLabel("You can change the size of the grid, how much time you have through the menu in \"Difficulty\".", SwingConstants.CENTER);
-                JLabel notes2 = new JLabel("Start a new game with set settings (Default: Easy) via the \"Game Control\" menu.", SwingConstants.CENTER);
+                JLabel notes1 = new JLabel("You can change the size of the grid and how much time you have through the menu in \"Difficulty\".", SwingConstants.CENTER);
+                JLabel notes2 = new JLabel("Start a new game with default settings (Easy) via clicking the title!", SwingConstants.CENTER);
                 
                 note.setLayout(new GridLayout(0, 1));
                 note.add(noteLabel);
@@ -133,7 +137,7 @@ public class MemoryGame extends JFrame implements ActionListener {
                 startTextPanel.add(note, BorderLayout.SOUTH);
 
                 // Preview picture of the game
-                JLabel previewPic = new JLabel(new ImageIcon(getClass().getResource("/Game3_MemoryGame/images/previewPic.png")));
+                JLabel previewPic = new JLabel(new ImageIcon(getClass().getResource("/memorygame/images/previewPic.png")));
                 previewPic.setPreferredSize(new Dimension(250, 200));
                 JLabel author = new JLabel("Created By: Jack Taylor");
                 JPanel preview = new JPanel();
@@ -169,7 +173,7 @@ public class MemoryGame extends JFrame implements ActionListener {
         timerDifficulty(timeDiff);
         
         // Initializes event listeners
-        initListeners();
+        initMenuListeners();
         
         // Resizes frame
         pack();
@@ -177,26 +181,14 @@ public class MemoryGame extends JFrame implements ActionListener {
         // Centers the initialized window to the middle of the screen
         setLocationRelativeTo(null);
         
-        
-        //go back to main menu when closing
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                launcher.setVisible(true);
-                System.out.println("game2 closed.");
-            }
-        });
-        
         // Displays the finalized JFrame
         setResizable(false);
         setVisible(true);
     }
     
     // Adds listeners to menu objects after the frame initializes
-    private void initListeners() {
+    private void initMenuListeners() {
         // listeners for menu
-        newGame.addActionListener(this);
-        exitConfirm.addActionListener(this);
         timerEasy.addActionListener(this);
         timerMedium.addActionListener(this);
         timerHard.addActionListener(this);
@@ -269,12 +261,12 @@ public class MemoryGame extends JFrame implements ActionListener {
     
     private void loadImages() {
         // Load an image for cards facedown
-        faceDown = new ImageIcon("/Game3_MemoryGame/images/facedown.png");
+        faceDown = new ImageIcon("src/memorygame/images/facedown.png");
 
         // Load face-up images and assign each pair an icon
         icons = new ArrayList<>();
         for (int i = 1; i <= (gridSize * gridSize) / 2; i++) {
-            Icon icon = new ImageIcon(getClass().getResource("/Game3_MemoryGame/images/" + i + ".png")); // Adjust path as needed
+            Icon icon = new ImageIcon(getClass().getResource("/memorygame/images/" + i + ".png")); // Adjust path as needed
             icons.add(icon);
             icons.add(icon); // Add each icon twice for pairs
         }
@@ -404,17 +396,6 @@ public class MemoryGame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object src = e.getSource();
         
-        // handles exiting
-        if (src == exitConfirm) {
-            // closes and erases the JFrame object instead of the entire application
-            dispose();
-        }
-        
-        // handles creating a new game
-        if (src == newGame) {
-            createGame();
-        }
-        
         // Handles grid difficulty
         if (src == gridEasy) {
             gridDifficulty("Easy");
@@ -465,8 +446,8 @@ public class MemoryGame extends JFrame implements ActionListener {
         });
         gameTimer.start();
     }
-//    
-//    public static void main(String[] args) {
-//        new MemoryGame();
-//    }
+    
+    public static void main(String[] args) {
+        new MemoryGame();
+    }
 }
