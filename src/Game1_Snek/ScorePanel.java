@@ -4,6 +4,7 @@ import java.awt.Font;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.GridLayout;
+import gamebytes.Account;
 
 public class ScorePanel extends JPanel {
 
@@ -12,8 +13,10 @@ public class ScorePanel extends JPanel {
     private JLabel powerUpLabel;
     private int score = 0;
     private int highScore = 0;
+    private Account userAcc;
 
-    public ScorePanel() {
+    public ScorePanel(Account userAcc) {
+        this.userAcc = userAcc;
         setLayout(new GridLayout(1, 3)); // 1 row, 3 columns grid to ensure even spacing
 
         powerUpLabel = new JLabel("Power Up: None", JLabel.CENTER);
@@ -31,6 +34,9 @@ public class ScorePanel extends JPanel {
     public void updateScore(int newScore) {
         this.score = newScore;
         scoreLabel.setText("Score: " + score);
+
+        userAcc.updateGameScore("Snek", score);
+        System.out.println(score);
     }
 
     public void checkHighScore(int configHighScore) {

@@ -101,11 +101,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Snek"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="game1_hsActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="game2_hs">
               <Properties>
                 <Property name="text" type="java.lang.String" value="WordGuessr"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="game2_hsActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="game3_hs">
               <Properties>

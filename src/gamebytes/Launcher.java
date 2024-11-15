@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -25,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import gamebytes.LoginFrame;
 import gamebytes.Account;
+import gamebytes.DataIO;
 
 public class Launcher extends javax.swing.JFrame {
     private JPanel bgPanel;
@@ -35,6 +37,7 @@ public class Launcher extends javax.swing.JFrame {
     private boolean loggedIn = false;
     private JFrame loginFrame;
     private Account acc;
+    private DataIO dataIO = new DataIO();
 
     public void updateLauncherState(boolean loggedIn, Account acc) {
         if (loggedIn) {
@@ -357,9 +360,19 @@ public class Launcher extends javax.swing.JFrame {
         highScores.setText("High Scores");
 
         game1_hs.setText("Snek");
+        game1_hs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                game1_hsActionPerformed(evt);
+            }
+        });
         highScores.add(game1_hs);
 
         game2_hs.setText("WordGuessr");
+        game2_hs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                game2_hsActionPerformed(evt);
+            }
+        });
         highScores.add(game2_hs);
 
         game3_hs.setText("Memory Game");
@@ -443,7 +456,7 @@ public class Launcher extends javax.swing.JFrame {
             this.setVisible(false);
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
-                    new GameWindow(Launcher.this);
+                    new GameWindow(Launcher.this, acc);
                     System.out.println("game1-snek opened.");
                 }
             });
@@ -451,7 +464,7 @@ public class Launcher extends javax.swing.JFrame {
             this.setVisible(false);
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
-                    new WordGuessr(Launcher.this);
+                    new WordGuessr(Launcher.this, acc);
                     System.out.println("game2-wordguessr opened.");
                 }
             });
@@ -486,6 +499,31 @@ public class Launcher extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_loginBtnActionPerformed
+
+    private ArrayList<Account> getAccounts() throws IOException, ClassNotFoundException {
+        ArrayList<Account> accounts = dataIO.LoadAccountData();
+        return accounts;
+
+    } 
+        
+
+    private void game1_hsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_game1_hsActionPerformed
+        try {
+        new HighScoresFrame("Snek", getAccounts());
+        } catch (IOException | ClassNotFoundException e) {
+            // handle the exception here
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_game1_hsActionPerformed
+
+    private void game2_hsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_game2_hsActionPerformed
+        try {
+        new HighScoresFrame("WordGuessr", getAccounts());
+        } catch (IOException | ClassNotFoundException e) {
+            // handle the exception here
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_game2_hsActionPerformed
 
     /**
      * @param args the command line arguments

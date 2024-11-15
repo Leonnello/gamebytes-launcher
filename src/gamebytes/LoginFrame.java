@@ -482,6 +482,10 @@ public class LoginFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, ioe);
         }
     }
+
+    public ArrayList<Account> getAccounts() {
+        return accounts;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
