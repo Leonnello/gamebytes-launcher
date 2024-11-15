@@ -42,8 +42,6 @@ public class MemoryGame extends JFrame implements ActionListener {
     
     // Constructor
     public MemoryGame(Launcher launcher) {
-    
-    public MemoryGame() {
         // components
             // menu bar
             menuBar = new JMenuBar();
