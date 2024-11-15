@@ -15,6 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import gamebytes.Account;
 
 public class WordGuessr extends javax.swing.JFrame {
     ImageIcon appImg = new ImageIcon("src/Game2_WordGuessr/logo.png");
@@ -24,8 +25,10 @@ public class WordGuessr extends javax.swing.JFrame {
     boolean dialogPresence = false;
     String keyword;
     List<List<String>> keyFiles = new ArrayList<List<String>>(3);
+    private Account acc;
 
-    public WordGuessr(Launcher launcher) {
+    public WordGuessr(Launcher launcher, Account acc) {
+        this.acc = acc;
         setTitle("WordGuessr");
         setIconImage(appImg.getImage());
         setResizable(false);
@@ -708,6 +711,12 @@ public class WordGuessr extends javax.swing.JFrame {
             dialogPresence = false;
         } else if(guessField.getText().length() != 5)
             JOptionPane.showMessageDialog(this, "Input must be exactly 5 letters.", "Invalid Input Error", JOptionPane.ERROR_MESSAGE);
+
+        updateScore();
+    }
+
+    private void updateScore() {
+        acc.updateGameScore("WordGuessr", score);
     }
     
     private void diffButtonsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_diffButtonsItemStateChanged

@@ -4,11 +4,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
+import java.awt.event.WindowListener;
 import java.awt.event.WindowEvent;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.io.InputStream;
 import gamebytes.Launcher;
+import gamebytes.Account;
+import Game1_Snek.ScorePanel;
 
 public class GameWindow {
     private JFrame window;
@@ -16,9 +19,12 @@ public class GameWindow {
     private MenuPanel menuPanel;
     private SettingsDialog settingsDialog;
     private Launcher launcher;
+    private ScorePanel scorePanel;
+    private Account acc;
 
-    public GameWindow(Launcher launcher) {
+    public GameWindow(Launcher launcher, Account acc) {
         this.launcher = launcher;
+        this.acc = acc;
         window = new JFrame("Snake Game");
         //window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setSize(800, 600);
@@ -30,6 +36,7 @@ public class GameWindow {
             public void windowClosing(WindowEvent e) {
                 launcher.setVisible(true);
                 System.out.println("game1 closed.");
+                scorePanel.updateScore(scorePanel.getScore());
             }
         });
         
@@ -67,7 +74,7 @@ public class GameWindow {
         public void actionPerformed(ActionEvent e) {
             window.remove(menuPanel); // remove the menu panel when the game starts
 
-            ScorePanel scorePanel = new ScorePanel();
+            scorePanel = new ScorePanel(acc);
             if (settingsDialog == null) {
                 settingsDialog = new SettingsDialog(window, new RestartButtonListener(), new DifficultyButtonListener(), new ColorChangeListener());
             }

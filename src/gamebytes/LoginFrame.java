@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.JFrame;
+import gamebytes.Launcher;
 
 /**
  *
@@ -26,12 +27,14 @@ public class LoginFrame extends javax.swing.JFrame {
     ArrayList<Account> accounts = new ArrayList<>();
     JFrame loginFrame = this;
     JFrame mainFrame;
+    private final Launcher mainLauncher;
     Boolean viewOnce = false;
     /**
      * Creates new form LoginFrame
      */
-    public LoginFrame() {
-        setTitle("Camila Homes | Real Estate Management");
+    public LoginFrame(Launcher mainLauncher) {
+        this.mainLauncher = mainLauncher;
+        setTitle("GameBytes Launcher Login");
         ImageIcon img = new ImageIcon("src/img/logo.png");
         setIconImage(img.getImage());
         initComponents();
@@ -184,7 +187,7 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("STXingkai", 0, 48)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(25, 102, 161));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("Alice Lot & Co.");
+        jLabel6.setText("GameBytes Launcher");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -372,13 +375,14 @@ public class LoginFrame extends javax.swing.JFrame {
                         Save();//save accountData
                         //this.setVisible(false);
                         
-                        FlatLightLaf.setup();
                         /* Create and display the form */
                         java.awt.EventQueue.invokeLater(new Runnable() {
                             public void run() {
+
+                                mainLauncher.updateLauncherState(true, acc);
 //                                if(!viewOnce){
-                                    mainFrame = new MainFrame(loginFrame, acc);
-                                    mainFrame.setVisible(true);
+                                // mainFrame = new MainFrame(loginFrame, acc);
+                                //     mainFrame.setVisible(true);
                                     
   //                                  viewOnce = true;
     //                            } else
@@ -454,7 +458,7 @@ public class LoginFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LoginFrame().setVisible(true);
+                
             }
         });
     }
@@ -477,6 +481,10 @@ public class LoginFrame extends javax.swing.JFrame {
         } catch(IOException ioe){
             JOptionPane.showMessageDialog(rootPane, ioe);
         }
+    }
+
+    public ArrayList<Account> getAccounts() {
+        return accounts;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel3;
